@@ -42,17 +42,17 @@ end
 
 local function handleSpamming()
   spamCount = spamCount + 1
-  print(spamCount)
+ -- TODO: add logic to incidicate visually that the spell is being spammed
 end
 
 EventFrame:SetScript("OnEvent", function(self, event, ...)
-  if (event == "UNIT_SPELLCAST_SENT") then
+  if event == "UNIT_SPELLCAST_SENT" then
     local unit, target, castGUID, spellID = ...
     local name, _, icon = GetSpellInfo(spellID)
     if icons[1] == icon then handleSpamming() return end
-    if event == 'UNIT_SPELLCAST_FAILED' then return end
     icons[1] = icon
     pushIcon(icon, 1)
+    spamCount = 0
     print(icon)
   end
   if event == "UNIT_SPELLCAST_FAILED" then
